@@ -3,9 +3,8 @@ export type ProductType = {
     name: string;
     shortDescription: string;
     description: string;
-    price: number;
-    portion: string;
-    taste: string;
+    portions: { name: string; price: number }[];
+    taste: string | string[];
     images: {
         thumbnail: string;
         primary: string;
