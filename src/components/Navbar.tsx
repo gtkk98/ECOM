@@ -5,11 +5,11 @@ import { Bell, Home, ShoppingCart } from "lucide-react";
 
 const Navbar = () => {
     return (
-        <nav className="w-full flex items-center justify-between border-b border-amber-500 pb-4">
+        <nav className="w-full flex items-center justify-between border-b border-teal-800 pb-4">
             {/*Left*/}
             <Link href="/" className="flex items-center">
                 <Image 
-                    src="/logo.png" 
+                    src="/logo2.png" 
                     alt="ChowUp"
                     width={36}
                     height={36}
