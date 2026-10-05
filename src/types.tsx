@@ -10,4 +10,13 @@ export type ProductType = {
         primary: string;
         gallery: string[];
     };
-}
+};
+
+export type ProductsType = ProductType[]
+
+export type CartItemType = ProductType & {
+    quantity: number;
+    selectedPortion: string;
+};
+
+export type CartItemsType = CartItemType[]
