@@ -20,6 +20,10 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## SEO
+
+Set `NEXT_PUBLIC_SITE_URL` to the deployed site's public origin (for example, `https://your-domain.com`) to enable absolute canonical URLs and populate the sitemap. Product pages generate metadata from the catalog; search-result pages are marked `noindex`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

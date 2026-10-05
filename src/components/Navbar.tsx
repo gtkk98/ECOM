@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { UserRound } from "lucide-react";
 import SearchBar from "./SearchBar";
 import CartButton from "./CartButton";
 
@@ -18,6 +19,10 @@ const Navbar = () => {
                 </div>
                 <SearchBar />
                 <div className="ml-auto flex items-center gap-4 sm:ml-0">
+                    <Link href="/login" className="inline-flex min-h-10 items-center gap-2 text-sm font-medium text-(--muted) transition-colors hover:text-(--brand)">
+                        <UserRound aria-hidden="true" className="h-4 w-4" />
+                        <span>Sign in</span>
+                    </Link>
                     <CartButton />
                       <Link href="/products" className="hidden min-h-10 items-center rounded-md bg-(--brand) px-4 text-sm font-semibold text-white transition-colors hover:bg-(--brand-dark) sm:inline-flex">
                         Order now

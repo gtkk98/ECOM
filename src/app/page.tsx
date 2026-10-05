@@ -1,6 +1,14 @@
 import ProductList from "@/components/ProductList";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { canonicalUrl } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Fresh comfort food",
+  description: "Explore ChowUp favorites made fresh to order, from wood-fired pizza to rich ramen and desserts.",
+  alternates: canonicalUrl("/") ? { canonical: canonicalUrl("/") } : undefined,
+};
 
 const Homepage = async ({
   searchParams
