@@ -1,5 +1,6 @@
 import type { CartItemType, CartStoreActionsType, CartStoreStateType } from '@/types';
 import { create } from 'zustand';
+import {persist, createJSONStorage} from "zustand/middleware"
 
 const useCartStore = create<CartStoreStateType & CartStoreActionsType>()((set) => ({
   cart: [],

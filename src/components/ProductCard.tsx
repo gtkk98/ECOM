@@ -5,14 +5,18 @@ import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useCart } from "./CartProvider";
 import useCartStore from "@/stores/cartStore";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
   const imageSrc = product.images?.primary ?? product.images?.thumbnail ?? "";
   const tastes = Array.isArray(product.taste) ? product.taste : [product.taste];
   const [selectedPortion, setSelectedPortion] = useState(product.portions[0]);
   const { addToCart } = useCartStore();
+  const handleAddToCart = () => {
+    addToCart(product, selectedPortion);
+    toast.success(`${product.name} (${selectedPortion.name}) added to cart`);
+  };
 
   return (
     <div className="shadow-lg rounded-lg overflow-hidden bg-white">
@@ -75,7 +79,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           <p className="font-medium text-black">${selectedPortion.price.toFixed(2)}</p>
           <button
             type="button"
-            onClick={() => addToCart(product, selectedPortion)}
+            onClick={handleAddToCart}
             className="ring-1 ring-emerald-200 bg-emerald-500 shadow-lg rounded-md px-2 py-1 text-sm cursor-pointer hover:text-white hover:bg-black transition-all duration-300 flex items-center gap-2"
           >
             <ShoppingCart className="w-4 h-4"/>
