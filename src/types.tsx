@@ -35,3 +35,13 @@ export const shippingFormSchema = z.object({
 });
 
 export type ShippingFormInputs = z.infer<typeof shippingFormSchema>;
+
+export type CartStoreStateType = {
+    cart: CartItemsType;
+};
+
+export type CartStoreActionsType = {
+  addToCart: (product: ProductType, portion: ProductType["portions"][number]) => void;
+  removeFromCart: (product: CartItemType) => void;
+    clearCart: () => void;
+}

@@ -1,19 +1,26 @@
 "use client";
 
 import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
-import { useCart } from "./CartProvider";
 import Link from "next/link";
+import useCartStore from "@/stores/cartStore";
 
 const CartButton = () => {
-  const { items } = useCart();
-  const [isOpen, setIsOpen] = useState(false);
-  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const itemCount = useCartStore((state) =>
+    state.cart.reduce((count, item) => count + item.quantity, 0),
+  );
 
   return (
-    <Link href="/cart" className="relative">
-        <ShoppingCart className="w-4 h-4 text-gray-400"/>
-        <span className="absolute -top-3 -right-3 bg-amber-400 text-gray-600 rounded-full w-4 h-4 flex items-center justify-center text-xs font-medium">0</span>
+    <Link
+      href="/cart"
+      aria-label={`Shopping cart, ${itemCount} items`}
+      className="relative"
+    >
+        <ShoppingCart className="w-4 h-4 text-gray-400" />
+        {itemCount > 0 && (
+          <span className="absolute -right-3 -top-3 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-400 px-1 text-xs font-medium tabular-nums text-gray-600">
+            {itemCount}
+          </span>
+        )}
     </Link>
   );
 };

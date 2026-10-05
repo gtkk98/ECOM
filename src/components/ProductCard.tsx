@@ -6,12 +6,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "./CartProvider";
+import useCartStore from "@/stores/cartStore";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
   const imageSrc = product.images?.primary ?? product.images?.thumbnail ?? "";
   const tastes = Array.isArray(product.taste) ? product.taste : [product.taste];
   const [selectedPortion, setSelectedPortion] = useState(product.portions[0]);
-  const { addToCart } = useCart();
+  const { addToCart } = useCartStore();
 
   return (
     <div className="shadow-lg rounded-lg overflow-hidden bg-white">
