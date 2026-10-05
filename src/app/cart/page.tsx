@@ -106,7 +106,9 @@ const cartItems: CartItemsType = [
 const CartPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [shippingForm, setShippingForm] = useState<ShippingFormInputs | null>(null);
+  const [shippingForm, setShippingForm] = useState<ShippingFormInputs | null>(
+    null,
+  );
 
   const activeStep = parseInt(searchParams.get("step") || "1");
 
@@ -151,7 +153,7 @@ const CartPage = () => {
               <div className="flex items-center justify-between" key={item.id}>
                 {/** IMAGE AND DETAILS */}
                 <div className="flex gap-8">
-                    {/**IMAGE */}
+                  {/**IMAGE */}
                   <div className="relative h-32 w-32 bg-gray-50 rounded-lg overflow-hidden">
                     <Image
                       src={item.images.primary}
@@ -194,7 +196,9 @@ const CartPage = () => {
           ) : activeStep === 3 && shippingForm ? (
             <PaymentForm />
           ) : (
-            <p className="text-sm text-gray-500">Please fill in the shipping form to continue.</p>
+            <p className="text-sm text-gray-500">
+              Please fill in the shipping form to continue.
+            </p>
           )}
         </div>
         {/**DETAILS */}

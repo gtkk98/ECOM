@@ -127,7 +127,7 @@ const PaymentForm = () => {
                             <svg
                                 role="img"
                                 aria-label={brand.title}
-                                viewBox={brand.viewBox}
+                                viewBox="0 0 24 24"
                                 className="h-5 w-auto max-w-10"
                                 fill={`#${brand.hex}`}
                                 xmlns="http://www.w3.org/2000/svg"

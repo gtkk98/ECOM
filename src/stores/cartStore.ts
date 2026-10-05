@@ -2,7 +2,9 @@ import type { CartItemType, CartStoreActionsType, CartStoreStateType } from '@/t
 import { create } from 'zustand';
 import {persist, createJSONStorage} from "zustand/middleware"
 
-const useCartStore = create<CartStoreStateType & CartStoreActionsType>()((set) => ({
+const useCartStore = create<CartStoreStateType & CartStoreActionsType>()(
+    persist(
+    (set) => ({
   cart: [],
   addToCart: (product, portion) =>
     set((state) => {
@@ -29,6 +31,12 @@ const useCartStore = create<CartStoreStateType & CartStoreActionsType>()((set) =
       ),
     })),
   clearCart: () => set({ cart: [] as CartItemType[] }),
-}));
+    }),
+    {
+      name: "cart",
+      storage: createJSONStorage(() => localStorage),
+    },
+  )
+);
 
 export default useCartStore;
