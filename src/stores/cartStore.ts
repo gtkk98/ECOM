@@ -6,24 +6,51 @@ const useCartStore = create<CartStoreStateType & CartStoreActionsType>()(
     persist(
     (set) => ({
   cart: [],
-  addToCart: (product, portion) =>
+  addToCart: (product, portion, quantity = 1) =>
     set((state) => {
+      const amountToAdd = Math.max(1, Math.floor(quantity));
       const existingItem = state.cart.find(
-        (item) => item.id === product.id && item.selectedPortion === portion.name,
+        (item) =>
+          item.id === product.id &&
+          (item.selectedPortion ?? item.portions[0]?.name) === portion.name,
       );
 
       if (existingItem) {
         return {
           cart: state.cart.map((item) =>
-            item === existingItem ? { ...item, quantity: item.quantity + 1 } : item,
+            item === existingItem
+              ? { ...item, quantity: (item.quantity ?? 1) + amountToAdd }
+              : item,
           ),
         };
       }
 
       return {
-        cart: [...state.cart, { ...product, quantity: 1, selectedPortion: portion.name }],
+        cart: [
+          ...state.cart,
+          { ...product, quantity: amountToAdd, selectedPortion: portion.name },
+        ],
       };
     }),
+  increaseQuantity: (product) =>
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.id === product.id && item.selectedPortion === product.selectedPortion
+          ? { ...item, quantity: (item.quantity ?? 1) + 1 }
+          : item,
+      ),
+    })),
+  decreaseQuantity: (product) =>
+    set((state) => ({
+      cart: state.cart.flatMap((item) => {
+        if (item.id !== product.id || item.selectedPortion !== product.selectedPortion) {
+          return [item];
+        }
+
+        const quantity = (item.quantity ?? 1) - 1;
+        return quantity > 0 ? [{ ...item, quantity }] : [];
+      }),
+    })),
   removeFromCart: (product) =>
     set((state) => ({
       cart: state.cart.filter(

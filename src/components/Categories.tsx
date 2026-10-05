@@ -12,6 +12,11 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 const categories = [
   {
+    name: "All dishes",
+    slug: "all",
+    icon: <UtensilsCrossed className="w-4 h-4" />
+  },
+  {
     name: "Pizza",
     slug: "pizza",
     icon: <Pizza className="w-4 h-4" />
@@ -53,27 +58,31 @@ const Categories = () => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const selectedCategory = searchParams.get("category");
+    const selectedCategory = searchParams.get("category") ?? "all";
 
-    const handelChange = (value: string | null) => {
-        const params = new URLSearchParams(searchParams);
-        params.set("category", value || "all");
-        router.push(`${pathname}?${params.toString()}`, {scroll: false});
+    const handleChange = (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value === "all") params.delete("category");
+      else params.set("category", value);
+      const query = params.toString();
+      router.push(query ? `${pathname}?${query}` : pathname, {scroll: false});
     };
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2 text-black bg-gray-300 p-2 rounded-lg mb-4 text-sm">
+      <div role="group" aria-label="Filter by category" className="mb-5 flex gap-2 overflow-x-auto pb-2 text-sm">
             {categories.map((category) => (
-                <div 
-                className={`flex items-center justify-center gap-2 cursor-pointer px-2 py-1 rounded-md ${
-                    category.slug === selectedCategory ? "bg-white" : "text-shadow-lime-300"   
+          <button
+          type="button"
+          aria-pressed={category.slug === selectedCategory}
+          className={`flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-full border px-4 transition-colors ${
+            category.slug === selectedCategory ? "border-(--brand) bg-(--brand) text-white" : "border-(--line) bg-white text-(--muted) hover:border-(--brand) hover:text-(--brand)"
                 }`} 
                 key={category.name}
-                onClick={()=>handelChange(category.slug)}
+          onClick={() => handleChange(category.slug)}
                 >
                     {category.icon}
                     {category.name}
-                </div>
+          </button>
             ))}      
         </div>
     )

@@ -6,7 +6,7 @@ import useCartStore from "@/stores/cartStore";
 
 const CartButton = () => {
   const itemCount = useCartStore((state) =>
-    state.cart.reduce((count, item) => count + item.quantity, 0),
+    state.cart.reduce((count, item) => count + (item.quantity ?? 1), 0),
   );
 
   return (

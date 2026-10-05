@@ -1,35 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
-import { Bell, Home } from "lucide-react";
 import CartButton from "./CartButton";
 
 const Navbar = () => {
     return (
-        <nav className="w-full flex items-center justify-between border-b border-teal-800 pb-4">
-            {/*Left*/}
-            <Link href="/" className="flex items-center">
-                <Image 
-                    src="/logo2.png" 
-                    alt="ChowUp"
-                    width={36}
-                    height={36}
-                    className="w-6 h-6 md:w-9 md:h-9"
-                />
-                <p className="hidden md:block text-md font-medium tracking-wider">ChowUp.</p>
-            </Link>
-            {/*Right*/}
-            <div className="flex items-center gap-6">
+        <header className="sticky top-0 z-40 -mx-2 mb-6 border-b border-(--line) bg-[#f6f7f4]/95 px-2 backdrop-blur sm:-mx-0 sm:px-0">
+            <nav aria-label="Main navigation" className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 py-3">
+                <div className="flex items-center gap-6">
+                    <Link href="/" aria-label="ChowUp home" className="flex shrink-0 items-center gap-2">
+                        <Image src="/logo2.png" alt="" width={36} height={36} className="h-9 w-9" />
+                        <span className="text-lg font-semibold text-foreground">ChowUp<span className="text-(--accent)">.</span></span>
+                    </Link>
+                      <Link href="/products" className="hidden text-sm font-medium text-(--muted) transition-colors hover:text-(--brand) sm:inline-flex">
+                        Menu
+                    </Link>
+                </div>
                 <SearchBar />
-                <Link href="/">
-                 <Home className="w-4 h-4 text-gray-600" />
-                </Link>
-                <Bell className="w-4 h-4 text-gray-600" />
-                <CartButton />
-                <Link href="/login">Sign in</Link>
-            </div>
-        </nav>
-    )
+                <div className="ml-auto flex items-center gap-4 sm:ml-0">
+                    <CartButton />
+                      <Link href="/products" className="hidden min-h-10 items-center rounded-md bg-(--brand) px-4 text-sm font-semibold text-white transition-colors hover:bg-(--brand-dark) sm:inline-flex">
+                        Order now
+                    </Link>
+                </div>
+            </nav>
+        </header>
+    );
 }
 
 export default Navbar

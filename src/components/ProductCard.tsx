@@ -4,6 +4,7 @@ import { ProductType } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useReducedMotion, motion } from "framer-motion";
 import { useState } from "react";
 import useCartStore from "@/stores/cartStore";
 import { toast } from "react-toastify";
@@ -12,6 +13,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
   const imageSrc = product.images?.primary ?? product.images?.thumbnail ?? "";
   const tastes = Array.isArray(product.taste) ? product.taste : [product.taste];
   const [selectedPortion, setSelectedPortion] = useState(product.portions[0]);
+  const prefersReducedMotion = useReducedMotion();
   const { addToCart } = useCartStore();
   const handleAddToCart = () => {
     addToCart(product, selectedPortion);
@@ -19,31 +21,42 @@ const ProductCard = ({ product }: { product: ProductType }) => {
   };
 
   return (
-    <div className="shadow-lg rounded-lg overflow-hidden bg-white">
+    <motion.article
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      whileHover={prefersReducedMotion ? undefined : { y: -4 }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.28, ease: "easeOut" }}
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-(--line) bg-white shadow-[0_3px_14px_rgb(25_42_38/5%)] transition-shadow hover:shadow-[0_12px_30px_rgb(25_42_38/12%)]"
+    >
       {/* IMAGE */}
-      <Link href={`/products/${product.id}`}>
-        <div className="relative aspect-[2/3]">
+      <Link href={`/products/${product.id}`} aria-label={`View ${product.name}`}>
+        <div className="relative aspect-4/3 overflow-hidden bg-[#edf1ed]">
           <Image
             src={imageSrc}
             alt={product.name}
             fill
-            className="object-cover hover:scale-105 transition-all duration-300"
+            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
+          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-(--brand-dark) backdrop-blur">Fresh pick</span>
         </div>
       </Link>
       {/* PRODUCT DETAILS */}
-      <div className="flex flex-col gap-4 p-4">
-        <h1 className="font-medium text-emerald-800">{product.name}</h1>
-        <p className="text-sm text-emerald-600">{product.shortDescription}</p>
+      <div className="flex flex-1 flex-col gap-4 p-4">
+        <div>
+          <h2 className="font-semibold leading-snug text-foreground">{product.name}</h2>
+          <p className="mt-1 line-clamp-2 min-h-10 text-sm leading-5 text-(--muted)">{product.shortDescription}</p>
+        </div>
         {/* PRODUCT TYPES */}
-        <div className="flex items-center gap-4 text-xs">
+        <div className="flex flex-wrap items-end gap-x-5 gap-y-3 text-xs">
           {/* PORTION */}
           <div className="flex flex-col gap-1">
-            <span className="text-gray-500">Portion</span>
+            <label htmlFor={`portion-${product.id}`} className="text-(--muted)">Portion</label>
             <select
               name="size"
-              id="size"
-              className="bg-emerald-500 ring ring-emerald-300 rounded-md px-2 py-1"
+              id={`portion-${product.id}`}
+              className="h-9 max-w-36 rounded-md border border-(--line) bg-white px-2 text-foreground"
               value={selectedPortion.name}
               onChange={(event) => {
                 const portion = product.portions.find(
@@ -60,13 +73,13 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             </select>
           </div>
           {/* TASTE */}
-          <div className="flex flex-col gap-1">
-            <span className="text-gray-600">Taste</span>
+          <div className="flex min-w-0 flex-col gap-1">
+            <span className="text-(--muted)">Taste</span>
             <div className="flex flex-wrap items-center gap-2">
               {tastes.map((taste) => (
                 <span
                   key={taste}
-                  className="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-medium text-emerald-700"
+                  className="rounded-full bg-[#edf5ef] px-2 py-1 text-[10px] font-medium text-(--brand-dark)"
                 >
                   {taste}
                 </span>
@@ -75,19 +88,19 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           </div>
         </div>
         {/* PRICE AND ADD TO CART */}
-        <div className="flex items-center justify-between">
-          <p className="font-medium text-black">${selectedPortion.price.toFixed(2)}</p>
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-(--line) pt-3">
+          <p className="font-semibold tabular-nums text-foreground">${selectedPortion.price.toFixed(2)}</p>
           <button
             type="button"
             onClick={handleAddToCart}
-            className="ring-1 ring-emerald-200 bg-emerald-500 shadow-lg rounded-md px-2 py-1 text-sm cursor-pointer hover:text-white hover:bg-black transition-all duration-300 flex items-center gap-2"
+            className="inline-flex min-h-10 items-center gap-2 rounded-md bg-(--brand) px-3 text-sm font-semibold text-white transition-colors hover:bg-(--brand-dark)"
           >
-            <ShoppingCart className="w-4 h-4"/>
-            Add to Cart
+            <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+            Add
           </button>
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 };
 

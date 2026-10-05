@@ -3,6 +3,7 @@ import { ProductType } from "../types";
 import Categories from "./Categories";
 import ProductCard from "./ProductCard";
 import Filter from "./Filter";
+import { Search } from "lucide-react";
 
 export const products:ProductType[] = [
   {
@@ -123,23 +124,75 @@ export const products:ProductType[] = [
   }
 ];
 
-const ProductList = ({category, params}: {category:string, params:"homepage" | "products"}) => {
-    return ( <div className="w-full">
-        <Categories/>
-        {params === "products" && <Filter/>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12">
-            {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-            ))}
+const categoryKeywords: Record<string, string[]> = {
+  pizza: ["pizza"],
+  burgers: ["burger"],
+  pasta: ["pasta", "fettuccine"],
+  "wings-and-sides": ["wing", "side"],
+  "ramen-and-asian": ["ramen", "asian"],
+  desserts: ["dessert", "cake", "cheesecake"],
+  beverages: ["beverage", "drink", "soda"],
+};
+
+const ProductList = ({
+  category,
+  query,
+  sort,
+  params,
+}: {
+  category?: string;
+  query?: string;
+  sort?: string;
+  params: "homepage" | "products";
+}) => {
+  const normalizedQuery = query?.trim().toLowerCase() ?? "";
+  const keywords = category && category !== "all" ? categoryKeywords[category] : undefined;
+  const visibleProducts = products
+    .filter((product) => {
+      const searchableText = `${product.name} ${product.shortDescription} ${product.description} ${product.taste}`.toLowerCase();
+      const matchesQuery = !normalizedQuery || searchableText.includes(normalizedQuery);
+      const matchesCategory = !keywords || keywords.some((keyword) => searchableText.includes(keyword));
+      return matchesQuery && matchesCategory;
+    })
+    .sort((first, second) => {
+      if (sort === "price-low") return first.portions[0].price - second.portions[0].price;
+      if (sort === "price-high") return second.portions[0].price - first.portions[0].price;
+      if (sort === "name") return first.name.localeCompare(second.name);
+      return 0;
+    });
+
+  return (
+    <section id="menu" className="w-full scroll-mt-24">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-(--brand)">From our kitchen</p>
+                    <h2 className="mt-1 text-2xl font-semibold text-foreground sm:text-3xl">Find your next favorite</h2>
         </div>
-        <Link 
-            href={category ? `/products/?category=${category}` : "/products"} 
-            className="flex justify-end m-4 underline text-sm text-gray-500"
-        >
-            View all products
+                <p className="text-sm text-(--muted)">{visibleProducts.length} {visibleProducts.length === 1 ? "dish" : "dishes"}</p>
+      </div>
+      <Categories />
+      {params === "products" && <Filter sort={sort} />}
+      {visibleProducts.length > 0 ? (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          {visibleProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex min-h-56 flex-col items-center justify-center rounded-lg border border-dashed border-(--line) bg-white/70 px-6 text-center">
+          <Search className="h-6 w-6 text-(--muted)" aria-hidden="true" />
+          <h3 className="mt-3 font-semibold">No dishes found</h3>
+                    <p className="mt-1 max-w-sm text-sm text-(--muted)">Try another search or choose a different category.</p>
+                    <Link href="/products" className="mt-4 text-sm font-semibold text-(--brand) underline underline-offset-4">Browse the full menu</Link>
+        </div>
+      )}
+      {params === "homepage" && (
+                <Link href={category ? `/products/?category=${category}` : "/products"} className="mt-6 inline-flex min-h-10 items-center text-sm font-semibold text-(--brand) underline underline-offset-4 hover:text-(--brand-dark)">
+          View full menu
         </Link>
-    </div>
-    )
+      )}
+    </section>
+  );
 }
 
 export default ProductList;

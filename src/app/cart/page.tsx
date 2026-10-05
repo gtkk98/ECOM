@@ -2,11 +2,12 @@
 
 import PaymentForm from "@/components/PaymentForm";
 import ShippingForm from "@/components/ShippingForm";
-import { CartItemsType, type ShippingFormInputs } from "@/types";
-import { ArrowRight, Trash2 } from "lucide-react";
+import useCartStore from "@/stores/cartStore";
+import { type ShippingFormInputs } from "@/types";
+import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const steps = [
   {
@@ -23,100 +24,101 @@ const steps = [
   },
 ];
 
-const cartItems: CartItemsType = [
-  {
-    id: 1,
-    name: "Artisan Pepperoni Pizza",
-    shortDescription:
-      "Wood-fired sourdough crust topped with spicy pepperoni and fresh mozzarella.",
-    description:
-      "Crafted with hand-tossed sourdough crust and baked in a 800°F wood-fired oven. Layered with authentic San Marzano tomato sauce, whole milk mozzarella, premium sliced pepperoni, and drizzled with chili-infused hot honey.",
-    portions: [
-      { name: "small", price: 18.99 },
-      { name: "medium", price: 22.99 },
-      { name: "large", price: 26.99 },
-    ],
-    taste: "Spicy & Savory",
-    images: {
-      thumbnail:
-        "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=300",
-      primary:
-        "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800",
-      gallery: [
-        "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800",
-        "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800",
-      ],
-    },
-    quantity: 1,
-    selectedPortion: "small",
-  },
-  {
-    id: 2,
-    name: "Smoky Bacon Double Cheeseburger",
-    shortDescription:
-      "Juicy double beef patties with thick-cut bacon, cheddar, and house sauce.",
-    description:
-      "Two 100% Angus beef patties smashed and seared on a flat-top grill. Served on a toasted brioche bun with double sharp cheddar cheese, applewood smoked bacon, crispy onion strings, pickles, and signature house BBQ mayo.",
-    portions: [
-      { name: "single", price: 14.5 },
-      { name: "double", price: 18.5 },
-      { name: "triple", price: 22.5 },
-    ],
-    taste: "Rich & Savory",
-    images: {
-      thumbnail:
-        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300",
-      primary:
-        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
-      gallery: [
-        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
-        "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800",
-      ],
-    },
-    quantity: 1,
-    selectedPortion: "single",
-  },
-  {
-    id: 3,
-    name: "Truffle Wild Mushroom Fettuccine",
-    shortDescription:
-      "Fresh fettuccine pasta tossed in a creamy garlic truffle cream sauce.",
-    description:
-      "House-made egg fettuccine noodles tossed with sauteed wild chanterelle and cremini mushrooms. Smothered in a velvet white wine truffle garlic sauce and finished with grated Aged Parmigiano-Reggiano.",
-    portions: [
-      { name: "regular", price: 21.0 },
-      { name: "large", price: 25.0 },
-      { name: "family", price: 39.0 },
-    ],
-    taste: "Creamy & Umami",
-    images: {
-      thumbnail:
-        "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=300",
-      primary:
-        "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800",
-      gallery: [
-        "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800",
-      ],
-    },
-    quantity: 1,
-    selectedPortion: "regular",
-  },
-];
+// const cartItems: CartItemsType = [
+//   {
+//     id: 1,
+//     name: "Artisan Pepperoni Pizza",
+//     shortDescription:
+//       "Wood-fired sourdough crust topped with spicy pepperoni and fresh mozzarella.",
+//     description:
+//       "Crafted with hand-tossed sourdough crust and baked in a 800°F wood-fired oven. Layered with authentic San Marzano tomato sauce, whole milk mozzarella, premium sliced pepperoni, and drizzled with chili-infused hot honey.",
+//     portions: [
+//       { name: "small", price: 18.99 },
+//       { name: "medium", price: 22.99 },
+//       { name: "large", price: 26.99 },
+//     ],
+//     taste: "Spicy & Savory",
+//     images: {
+//       thumbnail:
+//         "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=300",
+//       primary:
+//         "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800",
+//       gallery: [
+//         "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800",
+//         "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800",
+//       ],
+//     },
+//     quantity: 1,
+//     selectedPortion: "small",
+//   },
+//   {
+//     id: 2,
+//     name: "Smoky Bacon Double Cheeseburger",
+//     shortDescription:
+//       "Juicy double beef patties with thick-cut bacon, cheddar, and house sauce.",
+//     description:
+//       "Two 100% Angus beef patties smashed and seared on a flat-top grill. Served on a toasted brioche bun with double sharp cheddar cheese, applewood smoked bacon, crispy onion strings, pickles, and signature house BBQ mayo.",
+//     portions: [
+//       { name: "single", price: 14.5 },
+//       { name: "double", price: 18.5 },
+//       { name: "triple", price: 22.5 },
+//     ],
+//     taste: "Rich & Savory",
+//     images: {
+//       thumbnail:
+//         "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300",
+//       primary:
+//         "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
+//       gallery: [
+//         "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800",
+//         "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800",
+//       ],
+//     },
+//     quantity: 1,
+//     selectedPortion: "single",
+//   },
+//   {
+//     id: 3,
+//     name: "Truffle Wild Mushroom Fettuccine",
+//     shortDescription:
+//       "Fresh fettuccine pasta tossed in a creamy garlic truffle cream sauce.",
+//     description:
+//       "House-made egg fettuccine noodles tossed with sauteed wild chanterelle and cremini mushrooms. Smothered in a velvet white wine truffle garlic sauce and finished with grated Aged Parmigiano-Reggiano.",
+//     portions: [
+//       { name: "regular", price: 21.0 },
+//       { name: "large", price: 25.0 },
+//       { name: "family", price: 39.0 },
+//     ],
+//     taste: "Creamy & Umami",
+//     images: {
+//       thumbnail:
+//         "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=300",
+//       primary:
+//         "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800",
+//       gallery: [
+//         "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800",
+//       ],
+//     },
+//     quantity: 1,
+//     selectedPortion: "regular",
+//   },
+// ];
 
-const CartPage = () => {
+const CartPageContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [shippingForm, setShippingForm] = useState<ShippingFormInputs | null>(
-    null,
-  );
+  const [shippingForm, setShippingForm] = useState<ShippingFormInputs>();
 
   const activeStep = parseInt(searchParams.get("step") || "1");
+
+  const {cart, decreaseQuantity, increaseQuantity, removeFromCart} = useCartStore();
+  const itemCount = cart.reduce((count, item) => count + (item.quantity ?? 1), 0);
 
   return (
     <div className="flex flex-col gap-8 items-center justify-center mt-12">
       {/*TITLE*/}
       <h1 className="text-2xl text-amber-400 font-medium">
-        Your Shopping Cart
+        Your Shopping Cart ({itemCount})
       </h1>
       {/* STEPS */}
       <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
@@ -149,8 +151,11 @@ const CartPage = () => {
         {/** STEPS */}
         <div className="w-full lg:w-7/12 shadow-lg border-1 border-gray-100 p-8 rounded-lg flex flex-col gap-8">
           {activeStep === 1 ? (
-            cartItems.map((item) => (
-              <div className="flex items-center justify-between" key={item.id}>
+            cart.map((item) => (
+              <div
+                className="flex items-center justify-between"
+                key={`${item.id}-${item.selectedPortion ?? item.portions[0]?.name ?? "default"}`}
+              >
                 {/** IMAGE AND DETAILS */}
                 <div className="flex gap-8">
                   {/**IMAGE */}
@@ -167,8 +172,29 @@ const CartPage = () => {
                     <div className="flex flex-col gap-1">
                       <p className="font-medium">{item.name}</p>
                       <p className="text-sm text-gray-500 capitalize">
-                        {item.selectedPortion} portion
+                        {item.selectedPortion ?? item.portions[0]?.name} portion
                       </p>
+                      <div className="flex items-center gap-2" aria-label={`Quantity for ${item.name}`}>
+                        <button
+                          type="button"
+                          onClick={() => decreaseQuantity(item)}
+                          aria-label={`Decrease quantity of ${item.name}`}
+                          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 hover:bg-gray-100"
+                        >
+                          <Minus className="h-3 w-3" />
+                        </button>
+                        <span className="min-w-5 text-center text-sm tabular-nums" aria-live="polite">
+                          {item.quantity ?? 1}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => increaseQuantity(item)}
+                          aria-label={`Increase quantity of ${item.name}`}
+                          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 hover:bg-gray-100"
+                        >
+                          <Plus className="h-3 w-3" />
+                        </button>
+                      </div>
                     </div>
                     <p className="font-medium">
                       ${" "}
@@ -181,7 +207,7 @@ const CartPage = () => {
                   </div>
                 </div>
                 {/** DELETE BUTTON */}
-                <button className="w-8 h-8 rounded-full bg-red-100 hover:bg-red-200 transition-all duration-300 text-red-400 flex items-center justify-center cursor-pointer ">
+                <button onClick={() =>removeFromCart(item) } className="w-8 h-8 rounded-full bg-red-100 hover:bg-red-200 transition-all duration-300 text-red-400 flex items-center justify-center cursor-pointer ">
                   <Trash2 className="w-3 h-3" />
                 </button>
               </div>
@@ -209,14 +235,16 @@ const CartPage = () => {
               <p className="text-sm text-gray-500">Subtotal</p>
               <p>
                 ${" "}
-                {cartItems
+                {cart
                   .reduce((acc, item) => {
                     const selectedPortion =
                       item.portions.find(
-                        (portion) => portion.name === item.selectedPortion,
+                        (portion) =>
+                          portion.name ===
+                          (item.selectedPortion ?? item.portions[0]?.name),
                       ) ?? null;
 
-                    return acc + (selectedPortion?.price ?? 0) * item.quantity;
+                    return acc + (selectedPortion?.price ?? 0) * (item.quantity ?? 1);
                   }, 0)
                   .toFixed(2)}
               </p>
@@ -238,14 +266,16 @@ const CartPage = () => {
               <p className="text-sm text-gray-500 font-semibold">Total Fee</p>
               <p>
                 ${" "}
-                {cartItems
+                {cart
                   .reduce((acc, item) => {
                     const selectedPortion =
                       item.portions.find(
-                        (portion) => portion.name === item.selectedPortion,
+                        (portion) =>
+                          portion.name ===
+                          (item.selectedPortion ?? item.portions[0]?.name),
                       ) ?? null;
 
-                    return acc + (selectedPortion?.price ?? 0) * item.quantity;
+                    return acc + (selectedPortion?.price ?? 0) * (item.quantity ?? 1);
                   }, 0)
                   .toFixed(2)}
               </p>
@@ -265,5 +295,11 @@ const CartPage = () => {
     </div>
   );
 };
+
+const CartPage = () => (
+  <Suspense fallback={<div className="py-12 text-center text-sm text-gray-500">Loading cart...</div>}>
+    <CartPageContent />
+  </Suspense>
+);
 
 export default CartPage;
