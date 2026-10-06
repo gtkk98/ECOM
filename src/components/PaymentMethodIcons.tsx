@@ -9,13 +9,13 @@ const paymentBrands = [siVisa, siMastercard, siAmericanexpress, siDiscover];
 
 const PaymentMethodIcons = () => (
   <div className="flex flex-col gap-2" aria-label="Accepted payment methods">
-    <p className="text-sm font-medium text-gray-700">Accepted cards</p>
+    <p className="text-sm font-medium text-(--muted)">Accepted cards</p>
     <ul className="flex flex-wrap items-center gap-2">
       {paymentBrands.map((brand) => (
         <li
           key={brand.slug}
           title={brand.title}
-          className="flex h-9 w-14 items-center justify-center rounded border border-gray-200 bg-white px-2"
+          className="flex h-9 w-14 items-center justify-center rounded border border-(--line) bg-(--surface) px-2"
         >
           <svg
             role="img"

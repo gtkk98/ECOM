@@ -16,7 +16,7 @@ const Filter = ({ sort }: { sort?: string }) => {
     return (
         <div className="my-5 flex items-center justify-between gap-3 text-sm text-(--muted) sm:justify-end">
             <label htmlFor="sort">Sort dishes</label>
-            <select name="sort" id="sort" value={sort ?? "recommended"} className="min-h-10 rounded-md border border-(--line) bg-white px-3 text-foreground" onChange={(event) => handleFilter(event.target.value)}>
+            <select name="sort" id="sort" value={sort ?? "recommended"} className="min-h-10 rounded-md border border-(--line) bg-(--surface) px-3 text-foreground" onChange={(event) => handleFilter(event.target.value)}>
                 <option value="recommended">Recommended</option>
                 <option value="price-low">Price: low to high</option>
                 <option value="price-high">Price: high to low</option>

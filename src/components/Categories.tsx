@@ -75,7 +75,7 @@ const Categories = () => {
           type="button"
           aria-pressed={category.slug === selectedCategory}
           className={`flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-full border px-4 transition-colors ${
-            category.slug === selectedCategory ? "border-(--brand) bg-(--brand) text-white" : "border-(--line) bg-white text-(--muted) hover:border-(--brand) hover:text-(--brand)"
+            category.slug === selectedCategory ? "border-(--brand) bg-(--brand) text-(--on-brand)" : "border-(--line) bg-(--surface) text-(--muted) hover:border-(--brand) hover:text-(--brand)"
                 }`} 
                 key={category.name}
           onClick={() => handleChange(category.slug)}

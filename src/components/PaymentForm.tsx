@@ -37,11 +37,11 @@ const PaymentForm = () => {
     } = useForm<PaymentFormInputs>({ resolver: zodResolver(paymentSchema) });
 
     const fieldClassName =
-        "w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100";
+        "w-full rounded-md border border-(--line) bg-(--surface) px-3 py-2 text-foreground outline-none focus:border-(--brand) focus:ring-2 focus:ring-(--focus)";
 
     if (submitted) {
         return (
-            <div role="status" className="rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+            <div role="status" className="rounded-md border border-(--accent) bg-(--surface-tint) p-4 text-sm text-foreground">
                 Demo payment details validated. No payment was processed. Connect a payment provider before accepting orders.
             </div>
         );
@@ -58,7 +58,7 @@ const PaymentForm = () => {
         >
             <div>
                 <h2 className="text-lg font-semibold">Payment Method</h2>
-                <p className="mt-1 text-sm text-gray-500">Pay by credit or debit card</p>
+                <p className="mt-1 text-sm text-(--muted)">Pay by credit or debit card</p>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -117,11 +117,11 @@ const PaymentForm = () => {
 
             <button
                 type="submit"
-                className="w-full rounded-lg bg-gray-800 p-2 text-white transition-colors hover:bg-gray-900"
+                className="w-full rounded-lg bg-(--brand) p-2 text-(--on-brand) transition-colors hover:bg-(--brand-dark)"
             >
                 Checkout
             </button>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-(--muted)">
                 Demo only. Card details are not saved and no payment is taken.
             </p>
         </form>

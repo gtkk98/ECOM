@@ -18,7 +18,7 @@ const ShippingForm = ({
     });
 
     const fieldClassName =
-        "w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100";
+        "w-full rounded-md border border-(--line) bg-(--surface) px-3 py-2 text-foreground outline-none focus:border-(--brand) focus:ring-2 focus:ring-(--focus)";
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
@@ -58,7 +58,7 @@ const ShippingForm = ({
 
             <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-800 p-2 text-white transition-colors hover:bg-gray-900"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-(--brand) p-2 text-(--on-brand) transition-colors hover:bg-(--brand-dark)"
             >
                 Continue to payment
             </button>

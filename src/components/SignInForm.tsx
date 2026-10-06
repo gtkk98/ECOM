@@ -12,7 +12,7 @@ const SignInForm = () => {
     setMessage("Sign-in is not connected yet. No credentials were sent or saved.");
   };
 
-  const fieldClassName = "min-h-11 w-full rounded-md border border-(--line) bg-white px-3 text-sm text-foreground placeholder:text-gray-400 focus:border-(--brand) focus:outline-none focus:ring-2 focus:ring-[#d9ebe2]";
+  const fieldClassName = "min-h-11 w-full rounded-md border border-(--line) bg-(--surface) px-3 text-sm text-foreground placeholder:text-(--muted) focus:border-(--brand) focus:outline-none focus:ring-2 focus:ring-(--focus)";
 
   return (
     <form onSubmit={handleSubmit} className="mt-7 flex flex-col gap-4">
@@ -50,11 +50,11 @@ const SignInForm = () => {
           </button>
         </div>
       </div>
-      <button type="submit" className="mt-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-(--brand) px-5 text-sm font-semibold text-white transition-colors hover:bg-(--brand-dark)">
+      <button type="submit" className="mt-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-(--brand) px-5 text-sm font-semibold text-(--on-brand) transition-colors hover:bg-(--brand-dark)">
         Sign in
       </button>
       <p role="note" className="text-xs leading-5 text-(--muted)">Authentication is not configured for this demo. This form does not send or store your credentials.</p>
-      {message && <p role="status" className="rounded-md border border-[#d9ebe2] bg-[#f2f8f4] p-3 text-sm text-(--brand-dark)">{message}</p>}
+      {message && <p role="status" className="rounded-md border border-(--focus) bg-(--surface-tint) p-3 text-sm text-(--brand-dark)">{message}</p>}
     </form>
   );
 };

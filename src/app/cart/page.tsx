@@ -117,7 +117,7 @@ const CartPageContent = () => {
   return (
     <div className="flex flex-col gap-8 items-center justify-center mt-12">
       {/*TITLE*/}
-      <h1 className="text-2xl text-amber-400 font-medium">
+      <h1 className="text-2xl text-(--accent) font-medium">
         Your Shopping Cart ({itemCount})
       </h1>
       {/* STEPS */}
@@ -125,20 +125,20 @@ const CartPageContent = () => {
         {steps.map((step) => (
           <div
             className={`flex items-center gap-2 border-b-2 pb-4 ${
-              step.id === activeStep ? "border-gray-800" : "border-gray-400"
+              step.id === activeStep ? "border-(--brand)" : "border-(--line)"
             }`}
             key={step.id}
           >
             <div
-              className={`w-6 h-6 rounded-full text-white p-4 flex items-center justify-center ${
-                step.id === activeStep ? "bg-gray-800" : "bg-gray-400"
+              className={`w-6 h-6 rounded-full text-(--on-brand) p-4 flex items-center justify-center ${
+                step.id === activeStep ? "bg-(--brand)" : "bg-(--line)"
               }`}
             >
               {step.id}
             </div>
             <p
               className={`text-sm font-medium ${
-                step.id === activeStep ? "text-gray-800" : "text-gray-400"
+                step.id === activeStep ? "text-foreground" : "text-(--muted)"
               }`}
             >
               {step.title}
@@ -149,7 +149,7 @@ const CartPageContent = () => {
       {/**STEPS AND DETAILS */}
       <div className="w-full flex flex-col lg:flex-row gap-16">
         {/** STEPS */}
-        <div className="w-full lg:w-7/12 shadow-lg border-1 border-gray-100 p-8 rounded-lg flex flex-col gap-8">
+        <div className="w-full lg:w-7/12 rounded-lg border border-(--line) bg-(--surface) p-8 shadow-lg flex flex-col gap-8">
           {activeStep === 1 ? (
             cart.map((item) => (
               <div
@@ -159,7 +159,7 @@ const CartPageContent = () => {
                 {/** IMAGE AND DETAILS */}
                 <div className="flex gap-8">
                   {/**IMAGE */}
-                  <div className="relative h-32 w-32 bg-gray-50 rounded-lg overflow-hidden">
+                  <div className="relative h-32 w-32 bg-(--surface-muted) rounded-lg overflow-hidden">
                     <Image
                       src={item.images.primary}
                       alt={item.name}
@@ -171,7 +171,7 @@ const CartPageContent = () => {
                   <div className="flex flex-col justify-between">
                     <div className="flex flex-col gap-1">
                       <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-gray-500 capitalize">
+                      <p className="text-sm text-(--muted) capitalize">
                         {item.selectedPortion ?? item.portions[0]?.name} portion
                       </p>
                       <div className="flex items-center gap-2" aria-label={`Quantity for ${item.name}`}>
@@ -179,7 +179,7 @@ const CartPageContent = () => {
                           type="button"
                           onClick={() => decreaseQuantity(item)}
                           aria-label={`Decrease quantity of ${item.name}`}
-                          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 hover:bg-gray-100"
+                          className="flex h-7 w-7 items-center justify-center rounded border border-(--line) text-foreground hover:bg-(--surface-muted)"
                         >
                           <Minus className="h-3 w-3" />
                         </button>
@@ -190,7 +190,7 @@ const CartPageContent = () => {
                           type="button"
                           onClick={() => increaseQuantity(item)}
                           aria-label={`Increase quantity of ${item.name}`}
-                          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 hover:bg-gray-100"
+                          className="flex h-7 w-7 items-center justify-center rounded border border-(--line) text-foreground hover:bg-(--surface-muted)"
                         >
                           <Plus className="h-3 w-3" />
                         </button>
@@ -222,17 +222,17 @@ const CartPageContent = () => {
           ) : activeStep === 3 && shippingForm ? (
             <PaymentForm />
           ) : (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-(--muted)">
               Please fill in the shipping form to continue.
             </p>
           )}
         </div>
         {/**DETAILS */}
-        <div className="w-full lg:w-5/12 shadow-lg border-1 border-gray-100 p-8 rounded-lg flex flex-col gap-8 h-max">
+        <div className="w-full lg:w-5/12 rounded-lg border border-(--line) bg-(--surface) p-8 shadow-lg flex flex-col gap-8 h-max">
           <h2 className="font-semibold">Cart Details</h2>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between text-sm">
-              <p className="text-sm text-gray-500">Subtotal</p>
+              <p className="text-sm text-(--muted)">Subtotal</p>
               <p>
                 ${" "}
                 {cart
@@ -252,18 +252,18 @@ const CartPageContent = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between text-sm">
-              <p className="text-sm text-gray-500">Discount(10%)</p>
+              <p className="text-sm text-(--muted)">Discount(10%)</p>
               <p>$ 10</p>
             </div>
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex justify-between text-sm">
-              <p className="text-sm text-gray-500">Shipping Fee</p>
+              <p className="text-sm text-(--muted)">Shipping Fee</p>
               <p>$ 10</p>
             </div>
-            <hr className="border-gray-200" />
+            <hr className="border-(--line)" />
             <div className="flex justify-between">
-              <p className="text-sm text-gray-500 font-semibold">Total Fee</p>
+              <p className="text-sm text-(--muted) font-semibold">Total Fee</p>
               <p>
                 ${" "}
                 {cart
@@ -284,7 +284,7 @@ const CartPageContent = () => {
           {activeStep === 1 && (
             <button
               onClick={() => router.push("/cart?step=2", { scroll: false })}
-              className="w-full bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white p-2 rounded-lg cursor-pointer flex items-center justify-center gap-2"
+              className="w-full bg-(--brand) hover:bg-(--brand-dark) transition-all duration-300 text-(--on-brand) p-2 rounded-lg cursor-pointer flex items-center justify-center gap-2"
             >
               Continue
               <ArrowRight className="w-3 h-3" />
@@ -297,7 +297,7 @@ const CartPageContent = () => {
 };
 
 const CartPage = () => (
-  <Suspense fallback={<div className="py-12 text-center text-sm text-gray-500">Loading cart...</div>}>
+  <Suspense fallback={<div className="py-12 text-center text-sm text-(--muted)">Loading cart...</div>}>
     <CartPageContent />
   </Suspense>
 );

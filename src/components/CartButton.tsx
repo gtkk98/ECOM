@@ -15,9 +15,9 @@ const CartButton = () => {
       aria-label={`Shopping cart, ${itemCount} items`}
       className="relative"
     >
-        <ShoppingCart className="w-4 h-4 text-gray-400" />
+        <ShoppingCart className="w-4 h-4 text-(--muted)" />
         {itemCount > 0 && (
-          <span className="absolute -right-3 -top-3 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-400 px-1 text-xs font-medium tabular-nums text-gray-600">
+          <span className="absolute -right-3 -top-3 flex h-4 min-w-4 items-center justify-center rounded-full bg-(--accent) px-1 text-xs font-medium tabular-nums text-(--foreground)">
             {itemCount}
           </span>
         )}

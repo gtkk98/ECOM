@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   },
   description: "Order crave-worthy comfort food from the ChowUp kitchen.",
   applicationName: "ChowUp",
+  icons: {
+    icon: "/logo2.png",
+  },
   keywords: ["ChowUp", "food delivery", "pizza", "burgers", "pasta", "desserts"],
   alternates: canonicalUrl("/") ? { canonical: canonicalUrl("/") } : undefined,
   openGraph: {

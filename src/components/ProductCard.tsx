@@ -27,11 +27,11 @@ const ProductCard = ({ product }: { product: ProductType }) => {
       viewport={{ once: true, amount: 0.15 }}
       whileHover={prefersReducedMotion ? undefined : { y: -4 }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.28, ease: "easeOut" }}
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-(--line) bg-white shadow-[0_3px_14px_rgb(25_42_38/5%)] transition-shadow hover:shadow-[0_12px_30px_rgb(25_42_38/12%)]"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-(--line) bg-(--surface) shadow-[0_3px_14px_rgb(25_42_38/5%)] transition-shadow hover:shadow-[0_12px_30px_rgb(25_42_38/12%)]"
     >
       {/* IMAGE */}
       <Link href={`/products/${product.id}`} aria-label={`View ${product.name}`}>
-        <div className="relative aspect-4/3 overflow-hidden bg-[#edf1ed]">
+        <div className="relative aspect-4/3 overflow-hidden bg-(--surface-muted)">
           <Image
             src={imageSrc}
             alt={product.name}
@@ -39,7 +39,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
-          <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-(--brand-dark) backdrop-blur">Fresh pick</span>
+          <span className="absolute left-3 top-3 rounded-full bg-(--surface) px-3 py-1 text-xs font-medium text-(--brand-dark) backdrop-blur">Fresh pick</span>
         </div>
       </Link>
       {/* PRODUCT DETAILS */}
@@ -56,7 +56,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             <select
               name="size"
               id={`portion-${product.id}`}
-              className="h-9 max-w-36 rounded-md border border-(--line) bg-white px-2 text-foreground"
+              className="h-9 max-w-36 rounded-md border border-(--line) bg-(--surface) px-2 text-foreground"
               value={selectedPortion.name}
               onChange={(event) => {
                 const portion = product.portions.find(
@@ -79,7 +79,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
               {tastes.map((taste) => (
                 <span
                   key={taste}
-                  className="rounded-full bg-[#edf5ef] px-2 py-1 text-[10px] font-medium text-(--brand-dark)"
+                  className="rounded-full bg-(--surface-tint) px-2 py-1 text-[10px] font-medium text-(--brand-dark)"
                 >
                   {taste}
                 </span>
@@ -93,7 +93,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
           <button
             type="button"
             onClick={handleAddToCart}
-            className="inline-flex min-h-10 items-center gap-2 rounded-md bg-(--brand) px-3 text-sm font-semibold text-white transition-colors hover:bg-(--brand-dark)"
+            className="inline-flex min-h-10 items-center gap-2 rounded-md bg-(--brand) px-3 text-sm font-semibold text-(--on-brand) transition-colors hover:bg-(--brand-dark)"
           >
             <ShoppingCart className="h-4 w-4" aria-hidden="true" />
             Add

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const LoginPage = () => (
-  <main className="mx-auto grid max-w-5xl overflow-hidden rounded-xl border border-(--line) bg-white shadow-[0_16px_50px_rgb(25_42_38/8%)] md:grid-cols-2">
+  <main className="mx-auto grid max-w-5xl overflow-hidden rounded-xl border border-(--line) bg-(--surface) shadow-[0_16px_50px_rgb(25_42_38/8%)] md:grid-cols-2">
     <section className="relative min-h-52 bg-[#18372f] md:min-h-[600px]" aria-label="ChowUp kitchen">
       <Image
         src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1200"
@@ -39,7 +39,7 @@ const LoginPage = () => (
         <span>NEW TO CHOWUP?</span>
         <span className="h-px flex-1 bg-(--line)" />
       </div>
-      <Link href="/products" className="mt-5 inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) text-sm font-semibold text-(--brand-dark) transition-colors hover:bg-[#edf5ef]">
+      <Link href="/products" className="mt-5 inline-flex min-h-11 items-center justify-center rounded-md border border-(--line) text-sm font-semibold text-(--brand-dark) transition-colors hover:bg-(--surface-tint)">
         Explore the menu
       </Link>
     </section>
