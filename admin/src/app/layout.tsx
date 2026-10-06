@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+// @ts-expect-error CSS imports are handled by Next.js at build time
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import logo from "./logo2.png";
